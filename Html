@@ -1,0 +1,637 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --banner-bg: rgba(13, 17, 23, 0.85);
+            --accent-pink: #FF1493;
+            --accent-glow: rgba(255, 20, 147, 0.4);
+            --text-white: #ffffff;
+            --border-glass: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Floating Banner Container */
+        .top-floating-banner {
+            position: fixed;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 700px;
+            height: 50px;
+            background: var(--banner-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glass);
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px 0 25px;
+            z-index: 10000;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            animation: slideDown 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Carousel Wrapper */
+        .carousel-wrapper {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            margin-right: 15px;
+        }
+
+        .carousel-content {
+            display: flex;
+            white-space: nowrap;
+            animation: scrollText 15s linear infinite;
+        }
+
+        .carousel-content span {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            font-size: 0.85rem;
+            color: var(--text-white);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Launch Button */
+        .banner-btn {
+            background: var(--accent-pink);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 0 15px var(--accent-glow);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .banner-btn:hover {
+            transform: scale(1.05);
+            background: #ff69b4;
+            box-shadow: 0 0 25px var(--accent-glow);
+        }
+
+        /* Modal Overlay for Milkshake */
+        #milkshake-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            z-index: 10001;
+            flex-direction: column;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-header {
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #161b22;
+        }
+
+        .close-btn {
+            background: #f85149;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #msha-iframe {
+            width: 100%;
+            flex-grow: 1;
+            border: none;
+        }
+
+        /* Animations */
+        @keyframes scrollText {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        @keyframes slideDown {
+            from { transform: translate(-50%, -100px); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            .carousel-content span { font-size: 0.75rem; }
+            .banner-btn span { display: none; }
+            .banner-btn { padding: 8px 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-floating-banner">
+        <div class="carousel-wrapper">
+            <div class="carousel-content">
+                <span>
+                    💻 Access your lifestyle, productivity tools and ideas All in one place! 🚀 💡 📈
+                </span>
+            </div>
+        </div>
+        
+        <button class="banner-btn" onclick="openMilkshake()">
+            <span>Launch Hub</span> ⭐️
+        </button>
+    </div>
+
+    <div id="milkshake-modal">
+        <div class="modal-header">
+            <span style="color:white; font-family: sans-serif; font-weight: bold;">Debeatzgh Hub</span>
+            <button class="close-btn" onclick="closeMilkshake()">✕ Close</button>
+        </div>
+        <iframe id="msha-iframe" src=""></iframe>
+    </div>
+
+    <script>
+        function openMilkshake() {
+            const modal = document.getElementById('milkshake-modal');
+            const iframe = document.getElementById('msha-iframe');
+            
+            // Set source only when clicked to save performance
+            iframe.src = "https://msha.ke/debeatzgh";
+            modal.style.display = "flex";
+            document.body.style.overflow = "hidden"; // Disable scroll
+        }
+
+        function closeMilkshake() {
+            const modal = document.getElementById('milkshake-modal');
+            const iframe = document.getElementById('msha-iframe');
+            
+            modal.style.display = "none";
+            iframe.src = ""; // Stop the iframe content
+            document.body.style.overflow = "auto"; // Re-enable scroll
+        }
+    </script>
+
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        :root {
+            --nav-bg: rgba(13, 17, 23, 0.95);
+            --nav-border: #30363d;
+            /* Changed to Deep Pink */
+            --nav-accent: #FF1493; 
+            --nav-hover: #FF69B4;
+            --glow-color: rgba(255, 20, 147, 0.5);
+        }
+
+        /* Dock Container */
+        .nav-dock {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            z-index: 10000;
+            font-family: sans-serif;
+        }
+
+        /* Launcher Button */
+        #nav-launcher {
+            width: 42px;
+            height: 42px;
+            background: var(--nav-bg);
+            border: 2px solid var(--nav-border);
+            color: var(--nav-accent);
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            padding: 0;
+        }
+
+        #nav-launcher.open {
+            color: white;
+            background: var(--nav-accent);
+            border-color: var(--nav-accent);
+            transform: rotate(-180deg);
+        }
+
+        /* Button Group */
+        .nav-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .nav-group.active {
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .nav-btn {
+            width: 38px;
+            height: 38px;
+            background: var(--nav-bg);
+            border: 1px solid var(--nav-border);
+            color: #c9d1d9;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.5) translateX(40px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+        }
+
+        /* Active State for Buttons */
+        .nav-group.active .nav-btn {
+            opacity: 1;
+            transform: scale(1) translateX(0);
+        }
+
+        /* Heartbeat Glow Animation */
+        @keyframes heartbeatGlow {
+            0% { box-shadow: 0 0 0 0 var(--glow-color); transform: scale(1); }
+            50% { box-shadow: 0 0 20px 8px var(--glow-color); transform: scale(1.15); }
+            100% { box-shadow: 0 0 0 0 var(--glow-color); transform: scale(1); }
+        }
+
+        .heartbeat-active {
+            animation: heartbeatGlow 1.2s ease-in-out;
+        }
+
+        .nav-btn:hover {
+            background: var(--nav-accent);
+            color: white;
+            border-color: var(--nav-accent);
+        }
+
+        /* Staggered transition delays */
+        .nav-group.active .nav-btn:nth-child(1) { transition-delay: 0.1s; }
+        .nav-group.active .nav-btn:nth-child(2) { transition-delay: 0.2s; }
+        .nav-group.active .nav-btn:nth-child(3) { transition-delay: 0.3s; }
+
+        svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+</head>
+<body>
+
+    <div class="nav-dock">
+        <button id="nav-launcher" onclick="toggleNav()">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+
+        <div class="nav-group" id="navGroup">
+            <button class="nav-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Top">
+                <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+            </button>
+
+            <a href="https://debeatzgh1.github.io/debeatzgh/" class="nav-btn" title="Home">
+                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            </a>
+
+            <button class="nav-btn" onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})" title="Bottom">
+                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function toggleNav() {
+            const group = document.getElementById('navGroup');
+            const launcher = document.getElementById('nav-launcher');
+            const buttons = document.querySelectorAll('.nav-btn');
+            
+            const isOpening = !group.classList.contains('active');
+            
+            group.classList.toggle('active');
+            launcher.classList.toggle('open');
+
+            if (isOpening) {
+                buttons.forEach((btn, index) => {
+                    // Reset animation
+                    btn.classList.remove('heartbeat-active');
+                    void btn.offsetWidth; // Force reflow
+                    
+                    // Trigger staggered heartbeat
+                    setTimeout(() => {
+                        btn.classList.add('heartbeat-active');
+                    }, (index + 1) * 200);
+                });
+            }
+        }
+    </script>
+
+</body>
+</html>
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debeatzgh Ecosystem Hub</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --card: #161b22;
+            --border: #30363d;
+            --accent: #58a6ff;
+            --success: #238636;
+            --premium: #d29922;
+            --danger: #f85149;
+            --text: #c9d1d9;
+            --shadow: rgba(0,0,0,0.5);
+        }
+
+        [data-theme="light"] {
+            --bg: #f6f8fa;
+            --card: #ffffff;
+            --border: #d0d7de;
+            --accent: #0969da;
+            --success: #1a7f37;
+            --premium: #9a6700;
+            --danger: #cf222e;
+            --text: #1f2328;
+            --shadow: rgba(0,0,0,0.1);
+        }
+
+        * { box-sizing: border-box; transition: background 0.3s, color 0.3s, border-color 0.3s; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* --- AUTHENTICATION --- */
+        #auth-gate, #welcome-modal {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 450px;
+            box-shadow: 0 10px 50px var(--shadow);
+        }
+
+        .shake-box { animation: box-shake 8s infinite; }
+
+        /* --- LOADER --- */
+        #loader-overlay {
+            position: absolute;
+            inset: 0;
+            background: var(--bg);
+            opacity: 0.9;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            backdrop-filter: blur(4px);
+        }
+
+        .spinner {
+            width: 45px;
+            height: 45px;
+            border: 4px solid var(--border);
+            border-left-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        /* --- TOP BANNER --- */
+        .banner-carousel {
+            height: 50px;
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .carousel-track {
+            display: flex;
+            white-space: nowrap;
+            animation: scrollText 40s linear infinite;
+        }
+
+        .carousel-item {
+            padding: 0 60px;
+            color: var(--text);
+            font-size: 0.85rem;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* --- MAIN LAYOUT --- */
+        .main-container {
+            display: grid;
+            grid-template-columns: 260px 1fr 300px;
+            height: calc(100vh - 50px);
+            opacity: 0.05;
+            filter: blur(20px);
+            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .main-container.unlocked { opacity: 1; filter: blur(0); }
+
+        .sidebar {
+            background: var(--card);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border);
+        }
+
+        .tab-btn {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .tab-btn:hover { border-color: var(--accent); }
+        .tab-btn.active { border-color: var(--accent); background: rgba(88,166,255,0.05); font-weight: bold; }
+
+        /* --- STATUS & SUPPORT --- */
+        .status-container {
+            margin-top: auto;
+            padding: 10px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .status-line {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #3fb950;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #3fb950;
+            animation: status-pulse 2s infinite;
+        }
+
+        .support-btn {
+            background: rgba(248, 81, 73, 0.1);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+            padding: 10px;
+            border-radius: 6px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .support-btn:hover { background: var(--danger); color: white; }
+
+        /* --- THEME TOGGLE --- */
+        .theme-switch {
+            margin-top: 15px;
+            padding-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.75rem;
+        }
+
+        .toggle-box {
+            width: 36px; height: 18px;
+            background: var(--border);
+            border-radius: 20px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .toggle-circle {
+            width: 14px; height: 14px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: absolute;
+            top: 2px; left: 2px;
+            transition: 0.3s;
+        }
+
+        [data-theme="light"] .toggle-circle { left: 20px; }
+
+        /* --- VIEWER & FEED --- */
+        .viewer-area { position: relative; background: #000; }
+        iframe { width: 100%; height: 100%; border: none; background: #fff; }
+
+        .sidebar-right { border-left: 1px solid var(--border); background: var(--card); overflow-y: auto; }
+        .chat-msg {
+            background: var(--bg);
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px;
+            font-size: 0.8rem;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            animation: slideIn 0.5s ease;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes scrollText { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        @keyframes box-shake { 0%, 90%, 100% { transform: rotate(0); } 92% { transform: rotate(1deg); } 95% { transform: rotate(-1deg); } }
+        @keyframes status-pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .btn-primary {
+            background: var(--success);
+            color: white;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .tag { background: var(--premium); color: white; font-size: 0.6rem; padding: 1px 5px; border-radius: 3px; margin-left: auto; }
+    </style>
+</head>
+<body data-theme="dark">
+
+    <div id="auth-gate">
+        <div class="auth-card shake-box">
+            <h2 style="color:var(--text)">Secure Hub Access</h2>
+            <p style="color:var(--text)">Authentication is required via the Collaborators Form.</p>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdXCPUz1JBq0W8MHN9VOE0p6cnp5Wtr74Ox2gqLLyzKi0UwKA/viewform" target="_blank" style="text-decoration:none">
+                <button class="btn-primary" onclick="showWelcome()">Authenticate / Sign Up</button>
+            </a>
+            <p style="margin-top:15px; font-size:0.8rem">Already verified? <span onclick="showWelcome()" style="color:var(--accent); cursor:pointer">Enter Workspace</span></p>
+        </div>
+    </div>
+
+    <div id="welcome-modal" style="display:none">
+        <div class="auth-card">
+            <h2 style="color:var(--success)">Welcome Aboard! 🚀</h2>
+            <p>Your se
