@@ -99,88 +99,118 @@
         }
 
         .tab-btn.active { color: var(--accent); border-bottom: 2px solid var(--accent); }
-    </style>
-</head>
-<body>
+   <style>
+    /* --- PROFILE CARD STYLING --- */
+    #user-profile-card {
+        position: fixed;
+        bottom: 100px;
+        right: 30px;
+        width: 280px;
+        background: rgba(10, 10, 15, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(0, 242, 255, 0.2);
+        border-radius: 24px;
+        padding: 24px;
+        display: none; /* Controlled by Auth State */
+        flex-direction: column;
+        z-index: 10002;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
 
-    <div id="auth-trigger" onclick="toggleAuthModal()">
-        <i class="fas fa-user-shield text-black text-xl"></i>
+    @keyframes popIn {
+        from { opacity: 0; transform: scale(0.9) translateY(20px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .profile-avatar {
+        width: 50px; height: 50px;
+        background: linear-gradient(135deg, #00f2ff, #0066ff);
+        border-radius: 15px;
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 900; color: #000; font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .status-badge {
+        font-size: 8px; font-weight: 900; text-transform: uppercase;
+        padding: 2px 8px; border-radius: 99px;
+        background: rgba(34, 197, 94, 0.2); color: #22c55e;
+        border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .profile-link {
+        display: flex; align-items: center; gap: 10px;
+        padding: 12px; border-radius: 12px;
+        color: #94a3b8; font-size: 11px; font-weight: 600;
+        transition: 0.3s; margin-top: 5px;
+    }
+    .profile-link:hover { background: rgba(255,255,255,0.05); color: #fff; }
+</style>
+
+<div id="user-profile-card">
+    <div class="flex justify-between items-start">
+        <div class="profile-avatar" id="user-initial">U</div>
+        <span class="status-badge">Secure Session</span>
+    </div>
+    
+    <div class="mt-2">
+        <h4 class="text-white font-black text-sm tracking-tight" id="display-email">user@dkonsult.com</h4>
+        <p class="text-gray-500 text-[9px] uppercase font-bold mt-1">Dkonsult Verified Member</p>
     </div>
 
-    <div id="auth-modal">
-        <div class="auth-card">
-            <button onclick="toggleAuthModal()" class="absolute top-6 right-6 text-gray-500 hover:text-white">
-                <i class="fas fa-times"></i>
-            </button>
-
-            <div class="flex gap-6 mb-8">
-                <span id="tab-login" class="tab-btn active" onclick="switchTab('login')">Login</span>
-                <span id="tab-signup" class="tab-btn" onclick="switchTab('signup')">Sign Up</span>
-            </div>
-
-            <h2 id="auth-title" class="text-2xl font-black mb-6">Welcome Back.</h2>
-
-            <form id="auth-form" onsubmit="handleAuth(event)">
-                <div class="input-group">
-                    <label class="text-[9px] uppercase font-bold text-gray-500 block mb-1">Email Address</label>
-                    <input type="email" placeholder="name@domain.com" required>
-                </div>
-
-                <div class="input-group">
-                    <label class="text-[9px] uppercase font-bold text-gray-500 block mb-1">Password</label>
-                    <input type="password" placeholder="••••••••" required>
-                </div>
-
-                <button type="submit" class="w-full bg-cyan-500 text-black font-black py-4 rounded-2xl mt-4 hover:bg-white transition-all shadow-lg shadow-cyan-500/20">
-                    CONTINUE
-                </button>
-            </form>
-
-            <div class="mt-8 pt-8 border-t border-white/5">
-                <button onclick="window.open('https://appdistribution.firebase.dev/i/dc2da2d4d3766b8a', '_blank')" 
-                    class="w-full border border-white/10 text-[10px] font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-white/5 transition">
-                    <i class="fab fa-google"></i> FIREBASE APP DISTRIBUTION
-                </button>
-            </div>
-        </div>
+    <div class="mt-6 space-y-1">
+        <a href="https://appdistribution.firebase.dev/i/dc2da2d4d3766b8a" target="_blank" class="profile-link">
+            <i class="fas fa-layer-group text-cyan-400"></i> My App Builds
+        </a>
+        <a href="https://debeatzgh.wordpress.com/" class="profile-link">
+            <i class="fas fa-external-link-alt text-gray-500"></i> Main Hub
+        </a>
     </div>
 
-    <script>
-        let currentMode = 'login';
+    <button onclick="handleLogout()" class="w-full mt-6 py-3 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white rounded-xl text-[10px] font-black uppercase tracking-widest transition-all">
+        Terminate Session
+    </button>
+</div>
 
-        function toggleAuthModal() {
-            const modal = document.getElementById('auth-modal');
-            const isVisible = modal.style.display === 'flex';
-            modal.style.display = isVisible ? 'none' : 'flex';
+<script type="module">
+    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const auth = getAuth();
+    const profileCard = document.getElementById('user-profile-card');
+    const trigger = document.getElementById('auth-trigger');
+
+    // Toggle logic for the floating button
+    window.toggleAuthModal = () => {
+        const user = auth.currentUser;
+        if (user) {
+            // If logged in, toggle the Profile Card instead of Login Modal
+            profileCard.style.display = (profileCard.style.display === 'flex') ? 'none' : 'flex';
+        } else {
+            // If logged out, open the existing Login Modal
+            document.getElementById('auth-modal').style.display = 'flex';
         }
+    };
 
-        function switchTab(mode) {
-            currentMode = mode;
-            const title = document.getElementById('auth-title');
-            const tabLogin = document.getElementById('tab-login');
-            const tabSignup = document.getElementById('tab-signup');
-
-            if (mode === 'login') {
-                title.innerText = "Welcome Back.";
-                tabLogin.classList.add('active');
-                tabSignup.classList.remove('active');
-            } else {
-                title.innerText = "Create Account.";
-                tabSignup.classList.add('active');
-                tabLogin.classList.remove('active');
-            }
-        }
-
-        function handleAuth(e) {
-            e.preventDefault();
-            // This is where you connect your Firebase SDK logic
-            alert(`${currentMode === 'login' ? 'Logging in' : 'Signing up'}... Check Firebase console.`);
-        }
-
-        // Close on ESC key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === "Escape") toggleAuthModal();
+    // Logout logic
+    window.handleLogout = () => {
+        signOut(auth).then(() => {
+            profileCard.style.display = 'none';
+            alert("Session Ended.");
         });
-    </script>
-</body>
-</html>
+    };
+
+    // UI Observer update
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            document.getElementById('display-email').innerText = user.email;
+            document.getElementById('user-initial').innerText = user.email.charAt(0).toUpperCase();
+            trigger.style.background = "#22c55e"; 
+            trigger.innerHTML = '<i class="fas fa-check text-white"></i>';
+        } else {
+            profileCard.style.display = 'none';
+            trigger.style.background = "#00f2ff";
+            trigger.innerHTML = '<i class="fas fa-user-shield text-black"></i>';
+        }
+    });
+</script>
