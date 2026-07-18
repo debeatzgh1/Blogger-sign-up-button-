@@ -144,7 +144,7 @@
         /* 3. FLOATING BUTTON: DEBEATZGH SEARCH AD */
         #debeatzgh-ad-btn {
             position: fixed;
-            bottom: 30px;
+            top: 30px;
             right: 30px;
             background: linear-gradient(135deg, #6c5ce7, #a29bfe);
             color: white;
