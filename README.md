@@ -288,7 +288,7 @@
     <!-- 2. FLOATING TOP INSTRUCTION BAR -->
     <div id="top-instruction-bar">
         <span class="badge">New Update</span> 
-        To access the brand new user experience layout, complete your app installation directly from the prompt!
+        !
     </div>
 
     <!-- MAIN APP CONTAINER -->
